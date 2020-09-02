@@ -14,10 +14,13 @@ import pandas                     # Manejo de grandes cantidades de datos
 import numpy as np                # Manejo de datos numéricos
 import matplotlib.pyplot as mp    # Manejo de gráficas
 
-# DESCARGA DE DATOS
+# # # # # # # # DESCARGA DE DATOS # # # # # # # #
 # Requerir de una URL
+# Muy similar a lo su sucede en una computadora de forma local
+# C:\Mis Documentos\
 url = 'http://web.mta.info/developers/turnstile.html'
 
+# ***
 # TODO: Controlar los posibles errores o excepciones que puedan aparecer al
 #       solicitar la respuesta de la página web
 
@@ -34,6 +37,16 @@ print(sopa.prettify())
 
 # Encontrar y mostrar todas las etiquetas que inicien con <a ...>
 sopa.findAll('a')
+
+# ***
+# TODO: Estos datos se alamacenen en un archivo de texto (de forma local)
+# para agilizar entonces las descargas
+
+# ***
+# TODO: Generar una lista con el texto colocado en la página web
+# esto es por ejemplo: Saturday, August 03, 2019
+#
+# De ser posible modificar esas fechas a lenguaje castellano (español pues)
 
 # Generar una lista para guardar los enlaces
 listaEnlaces = []
@@ -53,3 +66,33 @@ for enlace in sopa.findAll('a'):
 
 # TODO: Contabilizar cuantos elementos hay y colocarlos como disponibles de
 #       lectura
+
+# TODO: Mostrar al usuario solamente el nombre de los archivos o el texto del
+#       enlace guardando en listaFechas
+link = listaEnlaces[0]
+
+# Realizar la descarga del archivo
+# Crear la dirección de descarga
+urlDescarga = url[:url.rfind('/')+1] + link
+print(urlDescarga)
+
+# Generar el nombre del archivo
+archon = link.split("/")[-1]
+print(archon)
+# Obtener el archivo de la urlDescarga y guardar en archon
+urllib.request.urlretrieve(urlDescarga,archon)
+# Se detiene el programa por un segundo para evitar problemas
+time.sleep(1)
+
+# # # # # # # # MANIPULACIÓN DEL ARCHIVO # # # # # # # #
+# Apertura del archivo usando PANDAS
+df = pandas.read_csv(archon)
+
+# Mostrar los 5 primeros registros de la tabla de datos tipo PANDAS
+df.head()
+
+# Obtener la lista de estaciones sin que se repitan
+df['STATION'].unique().tolist()
+
+# TODO: Obtener todos los datos de manera única donde lo requiera, de los cuales
+# esta conformada la tabla de datos
