@@ -96,3 +96,41 @@ df['STATION'].unique().tolist()
 
 # TODO: Obtener todos los datos de manera única donde lo requiera, de los cuales
 # esta conformada la tabla de datos
+
+# Obtener los datos directamente de la web, sin tener que decargar los datos
+datosOnLine = pandas.read_csv(urlDescarga)
+
+# TODO: Generar el código para seleccionar entre descargar el archivo o trabajar
+# de manera "on-line"
+
+# JUGAR CON LOS DATOS PARA OBTENER UNA GRÁFICA
+# Obtener los datos de una sola estación en particular
+estacion = df[df["STATION"] == "59 ST"]
+
+# Obtener solo un valor de SCP de los datos de dicha estación
+scpfinal = estacion[estacion["SCP"] == "02-00-00"]
+
+# Obtener los valores únicos de las fechas
+fechas = scpfinal["DATE"].unique().tolist()
+
+# Obtener la lista de horas sin repetición
+scpfinal[scpfinal["DATE"] == "08/27/2020"]["TIME"].tolist()
+
+# Graficar los datos con respecto a las fechas
+for f in fechas:
+  mp.plot( scpfinal[scpfinal["DATE"] == f]["TIME"].tolist(),
+  scpfinal[scpfinal["DATE"] == f]["ENTRIES"].tolist() )
+
+# Dar los toques finales a la gráfica
+# Título
+mp.title("Entries for the station " + scpfinal["STATION"].unique().tolist()[0] + 
+         "using SCP = " + scpfinal["SCP"].unique().tolist()[0] )
+# Generar la cuadrícula
+mp.grid()
+# Etiquetas en x & y
+mp.xlabel("TIME")
+mp.ylabel("ENTRIES")
+# Una leyenda
+mp.legend(fechas, loc = 'upper right')
+# Ya una vez que se dio formato a la gráfica, mostrar
+mp.show()
